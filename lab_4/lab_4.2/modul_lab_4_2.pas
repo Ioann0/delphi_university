@@ -1,0 +1,339 @@
+﻿unit modul_lab_4_2;
+interface
+//Const M = 8;
+Type TSH = array[1..6] of string[113];
+     s25 = string[25];
+Type TZ = record
+        name: string[12];            {Название}
+        prod: string[19];            {Производитель}
+        year_of_comm: integer;       {Год ввода в строй}
+        max_range: word;             {Максимальная дальность}
+        num_of_pass_seats: word;     {Количество пассажирских мест}
+          end;
+      ttz = array of TZ;
+      fl = file of TZ;
+Const SH: TSH = ('                                                   Самолеты                                     ',
+'+===============================================================================================================+',
+'|   Название   |    Производитель    | Год ввода в строй | Максимальная дальность | Количество пассажирских мест|',
+'+==============+=====================+===================+========================+=============================+',
+'-------------------------------------------------------------------------------------------------------',
+'+===============================================================================================================+');
+
+Var F: fl;
+    FR, fi: text;
+    i:byte;
+    MZ: ttz;
+    A, Z: TZ;
+    flag: boolean;
+var pq: array of ttz;
+
+procedure PSH;
+{--------------------------- Запись в файл ------------------------------------}
+procedure ZF(nf: string);
+{--------------------------- Чтение файла -----------------------------------}
+procedure reading(var F: fl);
+{--------------------------- Создание файла -----------------------------------}
+procedure creating();
+{--------------------------- Дополнение файла ---------------------------------}
+procedure addition;
+{--------------------------- Модификация файла --------------------------------}
+procedure modification;
+{----------------- Удаление записей из файла(Вар. 7) --------------------------}
+procedure delete(t_name: string);
+{-------------------- Вспомогательная сортировка ------------------------------}
+procedure auxiliary_sort(var MZ: ttz; n: byte);
+{-----------------------------разложение на два массива -----------------------}
+procedure decomposition;
+{-------------------- Сортировка файла ----------------------------------------}
+procedure main_sort;
+function FILTR(st: s25 ): s25;
+procedure PRINT;
+
+implementation
+
+procedure PSH;
+var i: byte;
+begin
+  for i:= 1 to 4 do
+    writeln(FR, SH[i]);
+end;
+
+procedure ZF(nf: string);
+var fi: text;
+    b: char;
+begin
+  assign(fi, nf); reset(fi);
+  while not seekeof(fi) do 
+    with Z do begin
+      readln(fi, name, prod, year_of_comm, max_range, num_of_pass_seats);
+      name:= FILTR(name);
+      prod:= FILTR(prod);
+      write(F, Z);
+      PRINT;
+    end;
+  close(fi);
+end;
+
+{--------------------------- Чтение файла -----------------------------------}
+procedure reading(var F: fl);
+var n: byte;
+begin
+  PSH;
+  reset(F);
+  n:= 0;
+  repeat
+    read(F, Z);
+    PRINT;
+    inc(n);
+  until eof(F); close(F);
+  writeln(FR, SH[6]);
+  writeln(FR, 'Количество записей: ', n, #10#13);
+end;
+
+
+procedure creating();
+begin
+  //writeln(FR, '***Создание файла***');
+  PSH;
+  rewrite(F);
+  ZF('file_creation.txt');
+  writeln(FR, SH[6], #10#13);
+  close(F);
+end;
+
+{--------------------------- Дополнение файла ---------------------------------}
+procedure addition;
+begin
+  writeln(FR, '***Дополнение файла***');
+  PSH;
+  reset(F);
+  seek(F, filesize(F));
+  ZF('ADDITION.txt');
+  writeln(FR, SH[6], #10#13);
+  close(F);
+  writeln(FR, '***Файл после дополнения***');
+  reading(F);
+end;
+
+{--------------------------- Модификация файла --------------------------------}
+procedure modification;
+label MK;
+var t_name: string[11];
+    new_year_of_comm: word;
+begin
+  writeln(FR, '***Модификация файла***');
+  assign(fi, 'Модификация.txt'); reset(fi);
+  reset(F);
+  repeat
+    readln(fi, t_name, new_year_of_comm);
+    t_name:= FILTR(t_name);
+    writeln(FR, 'Название самолета: ', t_name);
+    writeln(FR, 'Изменить текущую дату ввода самолета в эксплуатацию на: ', new_year_of_comm);
+    
+    if t_name = '' then begin // нужна ли проверка для года?
+      writeln(FR, 'Отсутствуют данные для модификации');
+      //goto MK;
+      continue;
+    end;
+    
+    seek(F, 0);
+    repeat
+      read(F,Z);
+      if t_name = Z.name then begin
+        PRINT;
+        Z.year_of_comm:= new_year_of_comm;
+        writeln(FR, 'Замена произведена: ');
+        PRINT;
+        seek(F, filepos(F)-1);
+        write(F, Z);
+        goto MK;
+      end;
+    until eof(F);
+    writeln(FR, 'Имя ошибочно!');  
+  MK: until (eof(fi));
+  close(Fi);
+  close(F);
+  writeln(FR, #10, 'Файл после модификации: ');
+  reading(F);
+end;
+
+{----------------- Удаление записей из файла(Вар. 7) --------------------------}
+procedure delete(t_name: string);
+label MK;
+var i: byte; t: byte;
+    //t_name: string;
+    fl_size: longint;
+
+begin
+  writeln(FR, '***Удаление записи***');
+  //writeln(FR, 'Удаление с перемещением и однократным усечением***', #10);
+  //assign(fi, 'Удаление.txt'); reset(fi);
+  reset(F);
+  fl_size:= filesize(F);
+  //repeat
+    //readln(fi, t_name);
+    t_name:= FILTR(t_name);
+    writeln(FR, 'Удаляем по названию самолета: ','''' ,t_name, '''');
+    if t_name = '' then begin
+      writeln(FR, 'Нет данных для удаления');
+      //continue;
+    end;
+    seek(F,0);// - начало файла F
+    repeat
+      read(F,Z);
+      for t:=1 to fl_size do
+        if t_name = Z.name then begin
+          writeln(FR, 'Удаляем запись: ');
+          PRINT;
+          dec(fl_size);
+          if not eof(F) then
+            for i:= filepos(F) to fl_size do begin
+            seek(F, i); read(F,Z);
+            seek(F,i-1); write(F,Z);
+         end;
+        goto MK;
+       end;
+    until eof(F);
+    flag:= True;
+    //Form1.Label5.Caption := 'ФИО ошибочно';
+    writeln(FR, 'Некорректное название самолета');
+  MK: //until eof(fi);
+  seek(F, fl_size); Truncate(F);
+  //close(fi);
+  close(F);
+  writeln(FR, #10, '***Файл после удаления записей***');
+  reading(F);
+end;
+
+{-------------------- Вспомогательная сортировка ------------------------------}
+procedure auxiliary_sort(var MZ: ttz; n: byte);
+  var i,j,P: byte;
+      MZX: string[11];
+begin
+  MZX:= 'aa';
+  for j:=1 to n-1 do
+    for i:=1 to n do begin
+      if MZ[i].name < MZ[i+1].name then begin
+        MZX:= MZ[i].name;
+        MZ[i].name:= MZ[i+1].name;
+        MZ[i+1].name:= MZX;
+      end;
+    end;
+end;
+
+{-----------------------------разложение на два массива -----------------------}
+procedure decomposition;
+var n, n_1, i, nn: byte;
+    M_1, M_2: ttz;
+    F_1, F_2: fl;
+    main_fl: fl;
+begin
+  // кол-во записей
+  reset(F);
+  n:= filesize(F);
+  nn:= n - (n div 2);
+
+  // создание 1го отсорт массива
+  for i:=1 to (n div 2) do begin
+    read(F,Z);
+    M_1[i]:= Z;
+    end; auxiliary_sort(M_1, (n div 2));
+
+  assign(F_1, 'Массив_1.txt'); rewrite(F_1);
+  for i:=1 to (n div 2) do begin
+    write(F_1, M_1[i]);
+  end;
+  
+  // создание 2го отсорт массива
+  seek(F,(n div 2));
+  for i:=1 to nn do begin
+    read(F,Z);
+    M_2[i]:= Z;
+  end; auxiliary_sort(M_2, nn);
+  
+  assign(F_2, 'Массив_2.txt'); rewrite(F_2);
+  for i:=1 to nn do begin
+    write(F_2, M_2[i]);
+  end;
+  
+  close(F);
+  close(F_1);
+  close(F_2);
+end;
+
+{-------------------- Сортировка файла ----------------------------------------}
+procedure main_sort;
+label met_1;
+var F_1,F_2: fl;
+    Z_1,Z_2: TZ;
+    pr: byte;
+    i: byte;
+begin
+  assign(F_1, 'Массив_1.txt'); reset(F_1); 
+  assign(F_2, 'Массив_2.txt'); reset(F_2);
+  rewrite(F);
+  read(F_1,Z_1); read(F_2,Z_2); 
+  
+  met_1:
+  if Z_1.name < Z_2.name then begin
+    write(F, Z_2);
+    if not eof(F_2) then begin
+      read(F_2,Z_2);
+      goto met_1;
+    end
+    else begin
+      write(F,Z_1);
+      while not eof(F_1) do begin
+        read(F_1,Z_1);
+        write(F,Z_1);
+      end;
+    end;
+  end
+  else begin
+    write(F, Z_1);
+    if not eof(F_1) then begin
+      read(F_1,Z_1);
+      goto met_1;
+    end
+    else begin
+      write(F,Z_2);
+      while not eof(F_2) do begin
+        read(F_2,Z_2);
+        write(F,Z_2);
+      end;
+    end;
+  end;
+  
+  close(F_1); erase(F_1);
+  close(F_2); erase(F_2);
+
+  close(F);
+  writeln(FR, #10#13, '***Отсортированный массив!***');
+  reading(F);
+  
+end;
+
+
+function FILTR(st: s25 ): s25;
+Var i,j,l : integer;
+begin
+  l:= length(st);
+  for i:= 1 to l do
+    if st[i] <> ' ' then
+      for j:= l downto i do
+        if st[j] <> ' ' then begin
+          FILTR:= copy(st, i, j-i+1);
+          exit; end;
+  FILTR := '' ;
+end;
+
+procedure PRINT;
+var i: byte;
+begin
+    with Z do 
+      writeln(FR,'|', name,'|':15-length(name) , prod,'|':22-length(prod), year_of_comm:11,'|':9, max_range:14,'|':11, num_of_pass_seats:17,'|':13);
+end;
+
+begin
+  
+end.

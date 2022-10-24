@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.535,D:\Delphi\lab_4\lab_4.1\Unit1.pas=C:\Users\ASUS\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.535,D:\Delphi\lab_4\lab_4.1\Unit1.dfm=C:\Users\ASUS\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.257,=C:\Users\ASUS\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.474,=C:\Users\ASUS\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.921,D:\Delphi\lab_4\lab_4.1\OKCANCL2.dfm=c:\program files (x86)\embarcadero\studio\21.0\ObjRepos\EN\DelphiWin32\OKCANCL2.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.663,=D:\Delphi\lab_4\lab_4.1\Unit2.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.927,=D:\Delphi\lab_4\lab_4.1\Unit2.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.235,=D:\Delphi\lab_4\lab_4.1\Unit2.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.690,D:\Delphi\lab_4\lab_4.1\Project1.dproj=C:\Users\ASUS\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.795,=D:\Delphi\lab_4\lab_4.1\Unit3.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.087,=D:\Delphi\lab_4\lab_4.1\OKCANCL.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.924,=D:\Delphi\lab_4\lab_4.1\OKCNHLP2.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.463,=D:\Delphi\lab_4\lab_4.1\OKCANCL1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.087,=D:\Delphi\lab_4\lab_4.1\Unit3.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.921,D:\Delphi\lab_4\lab_4.1\OKCANCL2.PAS=c:\program files (x86)\embarcadero\studio\21.0\ObjRepos\EN\DelphiWin32\OKCANCL2.PAS</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.521,=D:\Delphi\lab_4\lab_4.1\OKCANCL2.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.869,=D:\Delphi\lab_4\lab_4.1\OKCANCL2.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.576,=c:\program files (x86)\embarcadero\studio\21.0\ObjRepos\EN\DelphiWin32\OKCANCL2.PAS</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="Unit1.pas"/>
+    <File Path="Unit1.dfm"/>
+    <File Path="OKCANCL2.pas"/>
+    <File Path="OKCANCL2.dfm"/>
+    <File Path="Unit2.pas"/>
+    <File Path="Unit2.dfm"/>
+    <File Path="OKCANCL.pas"/>
+    <File Path="OKCANCL.dfm"/>
+    <File Path="OKCANCL1.pas"/>
+    <File Path="OKCANCL1.dfm"/>
+  </ProjectSortOrder>
+</BorlandProject>

@@ -1,0 +1,2 @@
+New formed array: 
+Sum of such elements in each odd column: 

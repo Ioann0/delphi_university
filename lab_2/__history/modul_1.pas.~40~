@@ -1,0 +1,365 @@
+﻿unit modul_1;
+interface
+uses Dialogs;
+
+Const M = 8;
+
+//uses Dialogs;
+
+Type    PSTR = ^TZ;
+        TZ = record
+          name: string[11];            {Название}
+          prod: string[21];            {Производитель}
+          year_of_comm: integer;       {Год ввода в строй}
+          max_range: word;             {Максимальная дальность}
+          num_of_pass_seats: word;     {Количество пассажирских мест}
+          PTR: PSTR;
+        end;
+      s25 = string[25];
+
+
+type PSTRC = ^STRC;
+     STRC = record
+        strr: string;
+        left:  PSTRC;
+        right: PSTRC;
+     end;
+var
+  beg2l, beg1l: PSTRC;
+  fl, fi: text;
+  i: string;
+  len, c, j: integer;
+  boo: boolean;
+  ssh_key: integer;
+
+
+Var FR: text;
+    A, Z: TZ;
+    S: PSTR;
+    //boo: boolean;
+    txt: string;
+
+procedure IsItEmpty;
+procedure PRINT_ALL(var beg2l: PSTRC);
+procedure dopolnen(var beg2l: PSTRC; dat: string);
+procedure Erase(var beg2l: PSTRC; dat: string);
+Procedure PRINT_ALL_REVERSE(beg2l: PSTRC);
+procedure zadanie(var len: integer);
+function DelLastEnter(s: string):string;
+{------------------------вывод данных одной записи-----------------------------}
+procedure P(M: TZ);
+{-------------------------Проверка пустоты списка------------------------------}
+function PP(S: PSTR): boolean;
+{------------------------дополнение списка одной новой записью-----------------}
+procedure DOP(var S: PSTR; dat: TZ);
+{---------------------------вывод данных списка--------------------------------}
+procedure PRINT_ALL_ZADANIE_2(S: PSTR);
+procedure VVOD();
+{-----------------------поиск в списке по уникальному значению ключа-------------}
+Procedure POISK1(S: PSTR);
+{----------------------поиск по неуникальному признаку-------------------------}
+procedure POISK2(s: PSTR);
+{----------------------удаление из списка записи с заданным ключом-------------}
+procedure UD(var s: PSTR);
+function FILTR(st: s25 ): s25;
+
+implementation
+
+procedure IsItEmpty;
+var p: PSTRC;
+begin
+  p:= beg2l;
+  if p = nil then showmessage('элементы отсутствуют')
+             else boo:= true;
+end;
+
+procedure PRINT_ALL(var beg2l: PSTRC);
+var p: PSTRC;
+begin
+  IsItEmpty;
+  if boo = true then begin
+    p:= beg2l;
+    writeln('Все элементы списка:');
+    while p <> nil do begin
+      writeln(p^.strr);
+      p:= p^.right;
+    end;
+  end;
+end;
+
+procedure dopolnen(var beg2l: PSTRC; dat: string);
+var p: PSTRC;
+begin
+  new(p);
+  p^.left:= nil;  //линковочные поля элемента устанавливаем в NIL, чтобы элемент не указывал
+  p^.right:= nil; //на недопустимую область памяти
+  
+  p^.strr:= dat;
+  if beg2l = nil then beg2l:= p
+                 else begin
+                   p^.right:= beg2l; //правое линковочное поле добавляемого элемента устанавливаем на первый элемент}
+                   beg2l^.left:= p;  //левое линковочное поле первого элемента устанавливем на добавляемый узел}             
+                   beg2l:= p;
+                 end;
+  //writeln('элемент добавлен!')
+end;
+
+procedure Erase(var beg2l: PSTRC; dat: string);
+var p: PSTRC;
+begin
+  if boo = false then exit;
+  p:= beg2l;
+  while (p <> nil) AND (p^.strr <> i) do p:= p^.right;
+  if p = nil then begin
+    Writeln('Такой элемент отсутствует');
+    exit;
+  end;
+  if (p^.left = nil) then begin
+    beg2l:= beg2l^.right;
+    beg2l^.left := nil;
+  end
+  else begin
+    (p^.left)^.right := p^.right;
+    (p^.right)^.left := p^.left;
+  end;
+  dispose(p);
+end;
+
+Procedure PRINT_ALL_REVERSE(beg2l: PSTRC);
+Var
+ p: PSTRC;
+Begin
+  if boo = false then begin showmessage('List is Empty!'); exit;
+  p:= beg2l;
+  writeln('Все элементы списка в обратном порядке');
+  while (p^.right <> nil) do p:= p^.right;
+  repeat
+    writeln(p^.strr);
+    p:= p^.left;
+  until p = nil;
+  Writeln(#10);
+  end;
+end;
+
+procedure zadanie(var len: integer);
+var p: PSTRC;
+    q: PSTRC;
+    dat: string;
+begin
+  p:= beg2l;
+  while p <> nil do begin
+    if Length(p^.strr) < len then begin
+      new(q);
+      dat:= p^.strr;
+      q^.strr:= dat;
+      if beg1l = nil then beg1l:= q
+                     else begin
+                       //beg1l^.PTR:= q;
+                       q^.right:= beg1l; //правое линковочное поле добавляемого элемента устанавливаем на первый элемент}
+                       beg1l^.left:= q;  //левое линковочное поле первого элемента устанавливем на добавляемый узел}
+                       beg1l:= q;
+                     end;
+      //q^.PTR:= nil;
+      //beg1l^.PTR:= q;
+      //dat:= p^.strr;
+      //q^.inf:= dat;
+      p:= p^.right;
+      inc(j);
+    end else p:= p^.right;
+  end;
+end;
+
+function DelLastEnter(s: string):string;
+begin
+ if s[Length(s)] = #10
+  then
+   Delete(s, Length(s)-1, 2);
+ Result:=s;
+end;
+
+{------------------------вывод данных одной записи-----------------------------}
+procedure P(M: TZ);
+begin
+  with M do writeln(fr, name:11,'|' , prod:12, '|', year_of_comm:5,'|':2, max_range:5,'|':2, num_of_pass_seats:4,'|':3);
+
+
+//  with M do
+//    writeln(name:15,'|' , prod:20,'|', year_of_comm:11,'|':9, max_range:14,'|':11, num_of_pass_seats:17,'|':13);
+end;
+
+{-------------------------Проверка пустоты списка------------------------------}
+function PP(S: PSTR): boolean;
+begin
+  if s = nil then begin
+    writeln('СПИСОК ПУСТ!');
+    PP:= TRUE;
+  end else PP:= FALSE;
+end;
+
+{------------------------дополнение списка одной новой записью-----------------}
+procedure DOP(var S: PSTR; dat: TZ);
+var nov, cur, pr: PSTR; key: integer;
+begin
+  cur:= S; pr:= nil; key:= dat.year_of_comm; //writeln(' key = ', key);
+  new(nov); nov^:= dat;
+  while (cur <> nil) and (cur^.year_of_comm < key) do begin
+    pr:= cur; cur:= cur^.PTR; // движение вдоль списка
+  end;
+  nov^.PTR:= cur; // подключение нового элемента справа
+  if pr = nil then s:= nov //в начало списка
+              else pr^.PTR:= nov; // в середину списка
+end;
+
+{---------------------------вывод данных списка--------------------------------}
+procedure PRINT_ALL_ZADANIE_2(S: PSTR);
+var cur: PSTR;
+begin
+  writeln('--Чтение списка--'); cur:= s;
+  if PP(s) then exit; //проверка пустоты списка
+  while cur <> nil do begin
+    P(cur^); cur:= cur^.PTR; //вывод и движение вдоль списка
+  end;
+end;
+
+procedure VVOD();
+var M: TZ;
+    b: char; //пробел
+begin
+  assign(fr, 'airplanes.txt'); reset(fr);
+  writeln('--Заполнение списка новыми элементами--',#10);
+  while not eof(fr) do
+    with M do begin
+      readln(fr, name, prod, year_of_comm, max_range, num_of_pass_seats);
+      name:=FILTR(name);
+      prod:=FILTR(prod);
+      //P(M);
+      DOP(s, M);
+    end;
+      close(fr);
+end;
+
+{-----------------------поиск в списке по уникальному значению ключа-------------}
+Procedure POISK1(S: PSTR);
+Var
+  i: integer;
+  cur: PSTR;
+  fl: text;
+  t_name: string;
+  label MF;
+Begin
+  assign(fl, 'unique.txt'); reset(fl);
+  assign(fr, 'unkownU1.txt'); rewrite(fr);
+  //writeln(fr, #10);
+  if PP(S) then exit;
+  writeln(fr, '///поиск в списке по уникальному признаку\\');
+  while not eof(fl) do begin
+  readln(fl, t_name);
+  t_name:= FILTR(t_name);
+  writeln(fr, 'Поиск по названию самолета: ', t_name);
+  if t_name='' then begin
+     writeln(fr, 'Нет данных для поиска'); goto MF;
+  end;
+  cur:= s;
+  while (cur <> nil) and (FILTR(cur^.name) <> t_name) do
+    cur := cur^.PTR;
+  if cur = nil then Writeln(fr, 'Нет такого названия')
+               else begin ssh_key:= 1; P(cur^); end;
+  MF: Writeln(fr, '---Поиск завершен---');
+  end;
+  close(fl);
+  close(fr);
+End;
+
+{----------------------поиск по неуникальному признаку-------------------------}
+procedure POISK2(s: PSTR);
+var t_num_of_pass_seats: integer;
+    t_prod: string[13];
+    i, R: integer;
+    pr: boolean;
+    cur: PSTR;
+    flag: boolean;
+label MF;
+begin
+  assign(fl, 'not_unique.txt'); reset(fl);
+  assign(fr, 'unkownU1.txt'); append(fr);
+  if PP(s) then exit;
+
+  while not eof(fl) do begin
+    writeln(fr, '');
+    writeln(fr, '///Поиск по неуникальному признаку\\\');
+    flag:= true;
+    readln(fl, t_prod, t_num_of_pass_seats);
+    t_prod:= FILTR(t_prod);
+    writeln(fr, t_prod,#32 ,t_num_of_pass_seats);
+
+    if (t_num_of_pass_seats=0) and (t_prod='') then begin
+      writeln(fr, 'Нет данных для поиска.', #10); goto MF;
+    end;
+    cur:= s;
+    t_prod:= FILTR(t_prod);
+    while (cur <> nil) do begin
+      if ((t_prod = '') or (t_prod = cur^.prod)) and
+            ((t_num_of_pass_seats = 0) or (cur^.num_of_pass_seats <= t_num_of_pass_seats)) then begin
+            ssh_key:= 1; P(cur^);
+            cur:= cur^.PTR;
+            flag:= false;
+            end
+            else begin cur:= cur^.PTR; end; end;
+    if flag = true then Writeln(fr, 'Нет такого названия или такого кол-ва мест');
+  MF: Writeln(fr, '---Поиск завершен---');
+  end;
+  close(fl);
+  close(fr);
+end;
+
+{----------------------удаление из списка записи с заданным ключом-------------}
+procedure UD(var s: PSTR);
+var cur, pr: PSTR; t_name: string;
+label MF;
+begin
+  if PP(s) then exit;
+  assign(fl, 'delete.txt'); reset(fl);
+  assign(fr, 'unkownU1.txt'); append(fr);
+
+  writeln(fr, '');
+  writeln(fr, '///удаление из списка записи\\\');
+  while not eof(fl) do begin
+    readln(fl, t_name);
+    t_name:= FILTR(t_name);
+    if t_name='' then begin
+    writeln(fr, 'Нет данных для удаления'); goto MF; end;
+
+    writeln(fr, 'Удаление самолета: ', t_name);
+    cur:= s; pr:= nil;
+    while (cur <> nil) and (cur^.name <> t_name) do begin
+      pr:= cur; cur:= cur^.PTR; // вдоль списка
+    end;
+    if cur = nil then begin writeln(fr, 'Удаление не успешно!'); goto MF; end;
+    P(cur^);
+    if pr = nil then S:= cur^.PTR
+                else pr^.PTR:= cur^.PTR;
+    dispose(cur);
+    end;
+  close(fl);
+  MF: begin writeln(fr, '---Удаление завершенно!---', #10); end;
+  close(fr);
+end;
+
+function FILTR(st: s25 ): s25;
+Var i,j,l : integer;
+begin
+  l:= length(st);
+  for i:= 1 to l do
+    if st[i] <> ' ' then
+      for j:= l downto i do
+        if st[j] <> ' ' then begin
+          FILTR:= copy(st, i, j-i+1);
+          exit; end;
+  FILTR := '' ;
+end;
+
+
+begin
+  //
+end.
+

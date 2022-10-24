@@ -1,0 +1,173 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, VCLTee.Series,
+  VCLTee.TeEngine, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, VCLTee.TeeProcs,
+  VCLTee.Chart, Vcl.Samples.Spin, Vcl.ComCtrls;
+
+type
+  TForm1 = class(TForm)
+    Chart1: TChart;
+    BitBtn1: TBitBtn;
+    Series1: TFastLineSeries;
+    Series6: TFastLineSeries;
+    Series2: TLineSeries;
+    Series7: TLineSeries;
+    Series3: TPointSeries;
+    Series8: TPointSeries;
+    Series4: TBarSeries;
+    Series9: TBarSeries;
+    Series5: TAreaSeries;
+    Series10: TAreaSeries;
+    ComboBox1: TComboBox;
+    Panel1: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    SpinButton1: TSpinButton;
+    SpinButton2: TSpinButton;
+    TrackBar1: TTrackBar;
+    TrackBar2: TTrackBar;
+    TrackBar3: TTrackBar;
+    ProgressBar1: TProgressBar;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    RadioGroup1: TRadioGroup;
+    Label6: TLabel;
+    procedure FormActivate(Sender: TObject);
+    procedure Ris;
+    procedure ComboBox1Click(Sender: TObject);
+    procedure SpinButton1DownClick(Sender: TObject);
+    procedure SpinButton1UpClick(Sender: TObject);
+    procedure SpinButton2DownClick(Sender: TObject);
+    procedure SpinButton2UpClick(Sender: TObject);
+    procedure TrackBar1Change(Sender: TObject);
+    procedure TrackBar2Change(Sender: TObject);
+    procedure TrackBar3Change(Sender: TObject);
+    procedure Chart1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure Chart1MouseMove(Sender: TObject; Shift: TShiftState; X,
+      Y: Integer);
+    procedure Chart1MouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+var sh, vs, x1, y1, NN: integer;
+    drag: boolean;
+
+{$R *.dfm}
+
+procedure TForm1.Chart1MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+    x1:= X; y1:= Y;
+    drag:= True;
+end;
+
+procedure TForm1.Chart1MouseMove(Sender: TObject; Shift: TShiftState; X,
+  Y: Integer);
+begin
+  if drag  then
+    case radiogroup1.ItemIndex of
+    0: begin
+        chart1.left:= chart1.left + x - x1; chart1.top:= chart1.top + y - y1;
+       end;
+    1: begin
+      Chart1.Width:= Chart1.Width + Round(0.1 * (x - x1));
+      Chart1.Height:= Chart1.Height + Round(0.1 * (y - y1));
+       end;
+    end;
+end;
+
+procedure TForm1.Chart1MouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  drag:= False;
+end;
+
+procedure TForm1.ComboBox1Click(Sender: TObject);
+begin
+  NN:= combobox1.ItemIndex;
+  Ris;
+end;
+
+procedure TForm1.FormActivate(Sender: TObject);
+begin
+  sh:= chart1.Width; vs:= Chart1.Height;
+  NN:= 0;
+end;
+
+procedure TForm1.Ris;
+const n = 10;
+      C: array[0..4] of string = ('линиям', 'лентами', 'точками', 'параллелепипедами', 'плоскостями');
+var x, y: real;
+    dx: real;
+    i: integer;
+    st: string;
+begin
+  Form1.Caption:= 'Рисование на Chart ' + C[NN];
+  for i:= 0 to chart1.SeriesCount - 1 do chart1[i].Active:= False;
+  chart1[NN].Active:= True;
+  chart1[NN+5].Active:= True;
+  dx:= 2.0 / n;
+  x:= 1;
+  for i:= 1 to n do begin
+    y:= ln(x-1);
+    str(x:6:2, st);
+    chart1[NN].AddXY(x, y, st, clTeeColor);
+    chart1[NN+5].AddXY(x, 0.5 * y, st, clTeeColor);
+    x:= x + dx;
+  end;
+end;
+
+procedure TForm1.SpinButton1UpClick(Sender: TObject);
+begin
+  Chart1.Height:= Round(1.1 * Chart1.Height);
+end;
+
+procedure TForm1.SpinButton2UpClick(Sender: TObject);
+begin
+  Chart1.Width:= Round(1.1 * Chart1.Width);
+end;
+
+procedure TForm1.TrackBar1Change(Sender: TObject);
+begin
+  chart1.Height:= vs + Trackbar1.Position;
+  progressbar1.Position:= trackbar1.Position;
+end;
+
+procedure TForm1.TrackBar2Change(Sender: TObject);
+begin
+  chart1.Width:= sh + Trackbar2.Position;
+  progressbar1.Position:= trackbar2.Position;
+end;
+
+procedure TForm1.TrackBar3Change(Sender: TObject);
+begin
+  chart1.Width:= sh + Trackbar3.Position;
+  chart1.Height:= vs + Trackbar3.Position;
+  progressbar1.Position:= trackbar3.Position;
+end;
+
+procedure TForm1.SpinButton2DownClick(Sender: TObject);
+begin
+  Chart1.Width:= Round(0.9 * Chart1.Width);
+end;
+
+procedure TForm1.SpinButton1DownClick(Sender: TObject);
+begin
+  Chart1.Height:= Round(0.9 * Chart1.Height);
+end;
+
+end.

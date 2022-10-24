@@ -1,0 +1,230 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Buttons, modul_lab_4_1, unit2, OKCANCL, OKCANCL1;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    Panel1: TPanel;
+    Button2: TButton;
+    Button3: TButton;
+    Button4: TButton;
+    Button5: TButton;
+    StringGrid1: TStringGrid;
+    Label1: TLabel;
+    BitBtn1: TBitBtn;
+    OpenDialog1: TOpenDialog;
+    Button6: TButton;
+    procedure Button1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  flag, flag1: integer;
+  tprod: string;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  With StringGrid1 do begin
+    ColCount := 5;
+    Cells[0,0] := '                  Название';
+    Cells[1,0] := '              Производитель';
+    Cells[2,0] := '            Год ввода в строй';
+    Cells[3,0] := '       Максимальная дальность';
+    Cells[4,0] := ' Количество пассажирских мест';
+  end;
+
+  //Form1.Button2.Enabled := False;
+
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  if flag = 1 then begin
+     AssignFile(FR, 'results.txt' );
+     Append(FR);
+  end
+  else begin
+    AssignFile(FR, 'results.txt' );
+    rewrite(FR);
+  end;
+  vivod;
+  closefile(fr);
+
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+Label MM;
+Var
+  R : word;
+begin
+   Form1.Button2.Enabled := True;
+MM:
+  if OKRightDlg1.ShowModal = mrOK then begin
+      S1:= StrToInt(OKRightDlg1.MaskEdit1.text);
+      S2:= StrToInt(OKRightDlg1.MaskEdit2.text);
+      if (S1 = 0) or (S2 = 0) then begin
+        R := MessageDlg('Вы ввели нулевое значение!', MtWarning, mbOKCancel, 0);
+        Case R of
+          mrOK : GOTO MM;
+          mrCancel : Exit;
+        end;
+      end;
+    end
+    else
+      if Application.MessageBox('Вы не ввели значения. Повторить ввод?',
+                                'Надо ввести значения или Отмена', MB_OKCANCEL) = 1
+      then GOTO MM  // Нажата OK
+      else Exit;  // Нажата кнопка Отмена для смены строк
+
+      SwapStr;
+      //flag1:= 1;
+end;
+
+procedure TForm1.BitBtn1Click(Sender: TObject);
+begin
+  close;
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+Label NN;
+Var
+  R : word;
+begin
+  if OpenDialog1.Execute then   // Нажата кнопка Открыть
+    f_name := OpenDialog1.FileName   // Имя для файла исходных данных
+  else begin  // нажата кнопка Отмена
+    ShowMessage('Вы не ввели имя файла! Повторите Ввод');
+    Exit;
+  end;
+
+  NN :      // Начало контролируемого ввода
+    if OKRightDlg2.ShowModal = mrOK then begin
+    // Нажата кнопка Ввод количества записей в OKBottomDlg1:
+      col_zap:= StrToInt(OKRightDlg2.MaskEdit1.text);
+        // анализ количества данных
+      if col_zap = 0 then begin   // При M = 0
+        R:= MessageDlg('Вы ввели нулевое значение!', MtWarning, mbOKCancel, 0);
+        Case R of
+          mrOK: GOTO NN;   // Нажата OK Повторить
+          mrCancel: exit;   // Нажата Cancel - Выход
+        end;  // case
+      end;  // if M = 0
+    end  // кнопка Ввод количества записей в OKBottomDlg1
+    else // нажата кнопка Отмена окна диалога для ввода M
+      if Application.MessageBox('Вы не ввели значения. Повторить ввод?',
+                                'Надо ввести значения или Отмена', MB_OKCANCEL) = 1
+      then GOTO NN  // Нажата OK
+      else Exit;  // Нажата кнопка Отмена для ввода количества записей
+  VVOD;    // Вызов процедуры ввода из модуля
+  Panel1.Visible := True;   // сделать панель видимой
+  Button1.Enabled := False;   // сделать кнопку ввода недоступной
+end;
+
+procedure TForm1.Button5Click(Sender: TObject);
+var
+  i, j : integer;
+begin
+  j:= 0;
+  if (flag = 1) and (flag1 = 1) then begin
+   for i:= 0 to col_zap do begin
+      if tprod = MZ[i].prod then begin
+        //inc(j);
+        Form1.StringGrid1.Cells[0, j+1] := MZ[i].name;
+        Form1.StringGrid1.Cells[1, j+1] := MZ[i].prod;
+        Form1.StringGrid1.Cells[2, j+1] := IntToStr(MZ[i].year_of_comm);
+        Form1.StringGrid1.Cells[3, j+1] := IntToStr(MZ[i].max_range);
+        Form1.StringGrid1.Cells[4, j+1] := IntToStr(MZ[i].num_of_pass_seats);
+        inc(j);
+      end;
+   end;
+  end;
+
+
+  if flag1 = 0 then begin
+    Form1.StringGrid1.RowCount := col_zap+1;
+    for i:= 0 to col_zap do begin
+        Form1.StringGrid1.Cells[0, i+1] := MZ[i].name;
+        Form1.StringGrid1.Cells[1, i+1] := MZ[i].prod;
+        Form1.StringGrid1.Cells[2, i+1] := IntToStr(MZ[i].year_of_comm);
+        Form1.StringGrid1.Cells[3, i+1] := IntToStr(MZ[i].max_range);
+        Form1.StringGrid1.Cells[4, i+1] := IntToStr(MZ[i].num_of_pass_seats);
+    end;
+  end;
+end;
+
+procedure TForm1.Button6Click(Sender: TObject);
+begin
+  method_sliyania(MZ, col_zap);
+end;
+
+procedure TForm1.Button4Click(Sender: TObject);
+Label MK;
+Var
+  i : integer;
+  str : string;
+  //tprod: string;
+  counter: byte;
+begin
+  if flag = 1 then begin
+    assignfile(fr, 'results.txt'); append(fr);
+  end
+  else begin
+    assignfile(fr, 'results.txt'); rewrite(fr);
+  end;
+  Form1.Button2.Enabled := True;
+  Form1.Button3.Enabled := False;
+  //assignfile(fr, 'results.txt'); rewrite(fr);
+      // Показ окна диалога для поиска:
+    if OKRightDlg12.ShowModal = mrOK then begin   // нажата Ввод
+      tprod := FILTR(OKRightDlg12.Edit1.Text);   // ввод ФИО
+
+
+      if tprod = '' then begin // Ввод сообщения:
+        str := 'Вы не ввели производителя самолета!';
+        ShowMessagePos(str, 100, 100);
+        Writeln(FR, str);
+        //
+      end;
+      counter:= 0;
+      for i := 0 to col_zap - 1 do  // перебор номеров записей массива
+        if tprod = MZ[i].prod then begin
+          //str := 'Самолет(/ов) найден(/о): ';
+          //ShowMessagePos(str, 100, 100);
+          Form1.StringGrid1.RowCount := Form1.StringGrid1.RowCount + 1;
+          InsertStr(i);
+          inc(counter);
+          //Writeln(FR, str);
+          writeln(fr, 'Самолет: ');
+          my_P(i);
+        end;
+      str := 'Самолетов найдено: ' + inttostr(counter);
+      ShowMessagePos(str, 100, 100);
+    end   // Нажата кнопка Ввод
+    else Exit; // нажата кнопка выхода
+  // бесконечный цикл
+  closefile(fr);
+  flag:= 1;
+  flag1:= 1;
+end;
+end.

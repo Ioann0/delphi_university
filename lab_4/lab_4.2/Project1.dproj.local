@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.474,=C:\Users\ASUS\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.663,=C:\Users\ASUS\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.453,D:\Delphi\lab_4\lab_4.2\Unit1.dfm=C:\Users\ASUS\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.453,D:\Delphi\lab_4\lab_4.2\Unit1.pas=C:\Users\ASUS\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.672,=D:\Delphi\lab_4\lab_4.2\OKCANCL2.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.008,=D:\Delphi\lab_4\lab_4.2\OKCANCL.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.763,D:\Delphi\lab_4\lab_4.2\Project1.dproj=C:\Users\ASUS\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.967,=D:\Delphi\lab_4\lab_4.2\OKCANCL1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

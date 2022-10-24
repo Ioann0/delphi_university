@@ -1,0 +1,229 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, modul,
+  Unit2, Unit3, OKCANCL2;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Button4: TButton;
+    Label1: TLabel;
+    Panel1: TPanel;
+    Button5: TButton;
+    Button6: TButton;
+    Button7: TButton;
+    Button8: TButton;
+    BitBtn1: TBitBtn;
+    OpenDialog1: TOpenDialog;
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Panel1Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
+    procedure Button7Click(Sender: TObject);
+    procedure Button8Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1; pip,ixx: integer; //f: textfile;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  AssignFile(output, 'output.txt'); Rewrite(output);
+end;
+
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  //Panel1.hide();
+  //Запрос имени файла из диалога
+  if OpenDialog1.Execute then  begin
+  modul.name:= OpenDialog1.FileName;//showmessage(modul.name);
+//  assignfile(fr, 'output.res'); rewrite(fr);
+  end
+
+                             else begin
+        ShowMessage('Вы не ввели имя файла. Повторите ввод');
+        Exit; End;
+     if OKRightDlg.ShowModal = mrOK
+      then begin
+                mcol := StrToInt(OKRightDlg.MaskEdit1.Text);
+                mrow := StrToInt(OKRightDlg.MaskEdit2.Text);
+
+      if (mcol = 0) Or (mrow = 0) then begin
+                             ShowMessage('Вы ввели нулевое значение. Повторите ввод');
+                             exit; end;
+      if (mcol <> mrow)  then begin
+        showmessage('Вы ввели разные значения столбца и строки. Матрица должна быть квадратной! Повторите ввод');
+        exit;
+      end;
+      //else begin
+        // if col <> row  then showmessage('Вы ввели разные значения столбца и строки. Матрица должна быть квадратной! Повторите ввод');
+         //exit;
+           //end;
+             end;
+  array_input(x);
+  Label1.Caption := 'Введены исходные данные';
+  Button2.Enabled := True;
+  Button2.SetFocus;
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  //showmessage('hi');
+  //sort(x, mcol);
+  //number_of_negative_elements_of_main_and_secondary_diag(x, y, main_noned);
+  //number_of_such_elements_in_each_odd_column(x, amount);
+  //changing_the_elements_of_the_main_diagonal_of_the_matrix(x);
+  //array_output(x);
+  Label1.Caption:= 'Выполнена обработка(сортировока) данных';
+  Button2.Enabled:= False;
+  Button3.Enabled:= True;
+  Button3.SetFocus;
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+begin
+  //AssignFile(output, 'output.txt');
+  //Append(output);
+  writeln(output, '"-------------------------------------Sorted Array--------------------------------------------------------"');
+  array_input(x);
+  sort(y, mcol);
+  array_output(x);
+  writeln(output, '');
+  writeln(output, '"--------------------------------number_of_negative_elements_of_main_and_secondary_diag---------------------------------------------------"');
+  number_of_negative_elements_of_main_and_secondary_diag(x, y, main_noned);
+  ix:=0;
+  writeln('New formed array: ');
+  for pip:= 0 to high(y) - 20 do begin
+    write(output, floattostrf(y[ix], ffFixed, 8, 4):8, '|'); inc(ix);
+    if ix = 1 then begin
+      write(output, '0', '|':3); inc(ix);
+      writeln(output, '0', '|':3); inc(ix);
+    end else begin
+      write(output, floattostrf(y[ix],ffFixed, 2, 0):10, '|'); inc(ix);
+      writeln(output, floattostrf(y[ix],ffFixed, 2, 0):10, '|'); inc(ix);
+              end;
+    end;
+  writeln(output,'');
+  writeln(output, '"--------------------------------number_of_such_elements_in_each_odd_column---------------------------------------------------"');
+  writeln(output, 'Sum of such elements in each odd column: ');
+//  showmessage(sum);
+  if mcol = 5 then  number_of_such_elements_in_each_odd_column(x, amount);
+  //array_output(x);
+  writeln(output, '');
+  changing_the_elements_of_the_main_diagonal_of_the_matrix(x);
+  writeln(output, '"--------------------------------changing_the_elements_of_the_main_diagonal_of_the_matrix---------------------------------------------------"');
+  array_output(x);
+  closefile(output);
+  label1.Caption:= 'Выведены результаты в текстовый файл';
+  Button3.Enabled:= False;
+  Button4.Enabled:= True;
+  Button4.SetFocus;
+end;
+
+procedure TForm1.Button4Click(Sender: TObject);
+begin
+  Form2.Show;
+  Form3.Show;
+  Form1.FormStyle:= fsStayOntop;
+  Form1.FormStyle:= fsNormal;
+  Panel1.Visible:= True;
+  label1.Caption:= 'Открыты формы для вывода результатов';
+
+  Button4.Enabled:= False;
+  Button5.SetFocus;
+end;
+
+procedure TForm1.Button5Click(Sender: TObject);
+begin
+  Form2.ListBox1.Items.LoadFromFile('output.txt');
+  Label1.Caption:= 'Выведены результаты в окно ListBox1';
+  Button5.Enabled:= False;
+  Button6.SetFocus;
+end;
+
+procedure TForm1.Button6Click(Sender: TObject);
+begin
+  Form2.Combobox1.Items.LoadFromFile('output.txt');
+  Label1.Caption:= 'Выведены результаты в окно ComboBox11';
+  Button6.Enabled:= False;
+  Button7.SetFocus;
+end;
+
+procedure TForm1.Button7Click(Sender: TObject);
+begin
+  Form3.Memo1.Lines.LoadFromFile('output.txt');
+  Label1.Caption:= 'Выведены результаты в окно Memo1';
+  Button7.Enabled:= False;
+  Button8.SetFocus;
+end;
+
+procedure TForm1.Button8Click(Sender: TObject);
+var i,j: integer; s: string[15];
+begin
+ with Form3.StringGrid1 do begin
+    ColCount:= mcol; FixedCols:=0;
+    RowCount:= mrow+1; FixedRows:=1;
+    for j:=0 to mcol-1 do
+      Cells[j,0] := '   ' + IntToStr(j+1);
+
+    for i := 0 to mcol-1 do
+      for j := 0 to mcol-1 do
+        begin
+         Str(X[i*mcol+j]:10:5,s);
+         cells[j,i+1] := s;
+        end;
+  END;
+//  with Form3.StringGrid1 do begin
+//    ColCount:=2; FixedCols:=0;
+//    RowCount:=4; FixedRows:=1;
+//    for J:=0 to 1 do
+//      Cells[j,0] := '     ' + IntToStr(j+1);
+//    for i := 0 to 2 do
+//      for j := 0 to 1 do
+//        begin
+//         Str(x[i*2+j]:13:4,s);
+//         cells[j,i+1] := ' '+s;
+//        end;
+//  end;
+//   with Form3.StringGrid1 do begin
+//    ColCount:= col; FixedCols:=0;
+//    RowCount:= row+1; FixedRows:=1;
+//    for J:=0 to col-1 do
+//      Cells[j,0] := '     ' + IntToStr(j+1);
+//    for i := 0 to col-1 do
+//      for j := 0 to col-1 do
+//        begin
+//         Str(x[i*col+j]:13:4,s);
+//         cells[j,i+1] := ' '+s;
+//        end;
+//  END;
+    Button8.Enabled := False;
+//end;
+end;
+
+procedure TForm1.Panel1Click(Sender: TObject);
+begin
+  Panel1.hide();
+  //Panel1.Visible:= True;
+end;
+
+end.

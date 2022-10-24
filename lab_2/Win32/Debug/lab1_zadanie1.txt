@@ -1,0 +1,6 @@
+Все элементы списка после обработки
+Carried
+Frodo
+Machine
+Qwerty
+hello

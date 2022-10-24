@@ -1,0 +1,51 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TForm1 = class(TForm)
+    Edit1: TEdit;
+    ListBox1: TListBox;
+    Button1: TButton;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    fl: file of real;
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+var s: string; words: Tarray<string>; num: real;  i: byte;
+begin
+  if edit1.text <> '' then begin
+    s:= edit1.text;
+    words:= s.split([' ']);
+//    for i:= 0 to length(words) - 1 do begin
+//     // num[i]:= strtofloat(words[i]);
+//     //listbox1.items.Text:= listbox1.items.Text + words[i];
+//    end;
+    //exit;
+    assignfile(fl, 'typed_file.txt'); rewrite(fl);
+    for i := 0 to length(words) do begin
+      num:= strtofloat(words[i]);
+      write(fl, num);
+    end;
+    closefile(fl);
+
+    listbox1.Items.LoadFromFile('typed_file.txt');
+
+  end;
+end;
+
+end.

@@ -1,0 +1,343 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.ComCtrls, Vcl.Grids,
+  Vcl.StdCtrls, modul_lab_4_2, OKCANCL2, OKCANCL, OKCANCL1;
+
+type
+  TForm1 = class(TForm)
+    MainMenu1: TMainMenu;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    N5: TMenuItem;
+    N6: TMenuItem;
+    N7: TMenuItem;
+    N8: TMenuItem;
+    N9: TMenuItem;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    Корректировка: TTabSheet;
+    Дополнение: TTabSheet;
+    TabSheet4: TTabSheet;
+    Удаление: TTabSheet;
+    Протокол: TTabSheet;
+    StringGrid1: TStringGrid;
+    StringGrid2: TStringGrid;
+    StringGrid3: TStringGrid;
+    StringGrid4: TStringGrid;
+    StringGrid5: TStringGrid;
+    PopupMenu1: TPopupMenu;
+    N10: TMenuItem;
+    N11: TMenuItem;
+    N12: TMenuItem;
+    N13: TMenuItem;
+    N14: TMenuItem;
+    N15: TMenuItem;
+    N16: TMenuItem;
+    N17: TMenuItem;
+    N18: TMenuItem;
+    OpenDialog1: TOpenDialog;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    ListBox1: TListBox;
+    procedure N1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure N4Click(Sender: TObject);
+    procedure N5Click(Sender: TObject);
+    procedure N6Click(Sender: TObject);
+    procedure N7Click(Sender: TObject);
+    procedure N8Click(Sender: TObject);
+    procedure N9Click(Sender: TObject);
+    procedure N3Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  frs : textfile;
+
+implementation
+
+{$R *.dfm}
+
+Procedure Fill_Grid( sg : TStringGrid);
+Begin
+  With sg do begin
+  ColCount := 5;
+    Cells[0,0] := '                  Название';
+    Cells[1,0] := '              Производитель';
+    Cells[2,0] := '            Год ввода в строй';
+    Cells[3,0] := '       Максимальная дальность';
+    Cells[4,0] := ' Количество пассажирских мест';
+  end;
+End;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  AssignFile(frs, 'protocol.txt');  Rewrite(frs);
+  Fill_Grid(Form1.StringGrid1);
+  Fill_Grid(Form1.StringGrid2);
+  Fill_Grid(Form1.StringGrid3);
+  Fill_Grid(Form1.StringGrid4);
+  Fill_Grid(Form1.StringGrid5);
+//    With StringGrid1 do begin
+//    ColCount := 5;
+//    Cells[0,0] := '                  Название';
+//    Cells[1,0] := '              Производитель';
+//    Cells[2,0] := '            Год ввода в строй';
+//    Cells[3,0] := '       Максимальная дальность';
+//    Cells[4,0] := ' Количество пассажирских мест';
+//    end;
+end;
+
+procedure TForm1.N1Click(Sender: TObject);
+Var
+  fi : textfile;
+  fl_name : string;
+begin
+
+  if OpenDialog1.Execute then begin
+    fl_name := OpenDialog1.FileName;
+  end
+  else begin
+    ShowMessage('Вы не ввели имя файла! Повторите Ввод');
+    Exit;
+  end;
+  assignfile(F, 'data.txt');
+  assignfile(FR, 'results.txt');  rewrite(FR);
+  creating();
+  Form1.Label1.Caption := 'Типизированный файл создан';
+  Writeln(frs, 'Типизированный файл создан');
+  N1.Enabled:= False;
+//  CloseFile(fi);
+end;
+
+procedure TForm1.N3Click(Sender: TObject);
+begin
+  closefile(fr);
+  Form1.ListBox1.Items.LoadFromFile('results.txt');
+end;
+
+procedure TForm1.N4Click(Sender: TObject);
+begin
+  CloseFile(frs);
+  Close;
+end;
+
+procedure TForm1.N5Click(Sender: TObject);
+var
+  i: integer;
+begin
+  Reset(f);
+  PSH;
+  Writeln(frs, 'Типизированный файл прочитан:');
+  //RowCount:= 1;
+  repeat
+    Read(f, z);
+    modul_lab_4_2.PRINT;
+    //Writeln(frs, z.name, ' | ', z.prod, ' | ', IntToStr(z.year_of_comm), ' | ',
+    //IntToStr(z.max_range), ' | ', IntToStr(z.num_of_pass_seats), ' | ');
+    inc(i);
+    With Form1.StringGrid1 do begin
+      RowCount := RowCount + 1;
+      Cells[0, i] := z.name;
+      Cells[1, i] := z.prod;
+      Cells[2, i] := IntToStr(z.year_of_comm);
+      Cells[3, i] := IntToStr(z.max_range);
+      Cells[4, i] := IntToStr(z.num_of_pass_seats);
+    end;
+  until eof(f);
+  //Form1.StringGrid1.RowCount := Form1.StringGrid1.RowCount - 1;
+  CloseFile(f);
+end;
+
+procedure TForm1.N6Click(Sender: TObject);
+Label MK;
+Var
+  t_name: string;
+  new_year_of_comm: integer;
+  i: integer;
+  bl: boolean;
+begin
+  writeln(FR, '***Корректировка***');
+  bl:= false;
+  MK:
+    if OKRightDlg.ShowModal = mrOK then begin
+      t_name:= OKRightDlg.Edit1.Text;
+      new_year_of_comm:= strtoint(OKRightDlg.Edit2.Text);
+
+    if (t_name = '') or (t_name = '*название самолета*') then begin
+        ShowMessagePos('Отсутствуют данные для модификации', 100, 100);
+        GOTO MK;
+    end;
+
+      Reset(f);
+      Seek(f,0);
+
+      repeat
+        t_name := Filtr(t_name);
+        Read(f,z);
+
+        if t_name = z.name then begin
+          bl:= True;
+          modul_lab_4_2.PRINT;
+          z.year_of_comm:= new_year_of_comm;
+          writeln(FR, 'Замена произведена: ');
+          modul_lab_4_2.PRINT;
+          seek(F, filepos(F)-1);
+          write(F, Z);
+          Writeln(frs, 'Запись ', t_name, ' скорректирована');
+          Form1.Label2.Caption := 'Запись скорректирована';
+        end;
+      until eof(f);
+
+      if bl = true then begin
+        Seek(f,0);
+        repeat
+          Read(f, z);
+          inc(i);
+          With Form1.StringGrid2 do begin
+            RowCount := RowCount + 1;
+             Cells[0, i] := z.name;
+             Cells[1, i] := z.prod;
+             Cells[2, i] := IntToStr(z.year_of_comm);
+             Cells[3, i] := IntToStr(z.max_range);
+             Cells[4, i] := IntToStr(z.num_of_pass_seats);
+          end;
+        until eof(f);
+    //    Form1.StringGrid4.RowCount := Form1.StringGrid4.RowCount - 1;
+      end
+      else begin
+        Form1.Label2.Caption := 'Имя самолета ошибочно!';
+        writeln(FR, 'Имя ошибочно!');
+      end;
+      CloseFile(f);
+    end;
+end;
+
+procedure TForm1.N7Click(Sender: TObject);
+var f_name: string;
+    i: integer;
+begin
+  if OpenDialog1.Execute then
+    f_name:= OpenDialog1.FileName
+  else begin
+    ShowMessage('Отсутствует имя файла! Повторите Ввод');
+    Exit;
+  end;
+
+ addition;
+ reset(f);
+ repeat
+    Read(f, z);
+    modul_lab_4_2.PRINT;
+    //Writeln(frs, z.name, ' | ', z.prod, ' | ', IntToStr(z.year_of_comm), ' | ',
+    //IntToStr(z.max_range), ' | ', IntToStr(z.num_of_pass_seats), ' | ');
+    inc(i);
+    With Form1.StringGrid3 do begin
+      RowCount := RowCount + 1;
+      Cells[0, i] := z.name;
+      Cells[1, i] := z.prod;
+      Cells[2, i] := IntToStr(z.year_of_comm);
+      Cells[3, i] := IntToStr(z.max_range);
+      Cells[4, i] := IntToStr(z.num_of_pass_seats);
+    end;
+  until eof(f);
+  //Form1.StringGrid1.RowCount := Form1.StringGrid1.RowCount - 1;
+
+
+ Form1.Label3.Caption := 'Дополнение прошло успешно';
+end;
+
+procedure TForm1.N8Click(Sender: TObject);
+Label NN;
+Var
+  t_name : string;
+  i: integer;
+begin
+  writeln(FR, 'Поиск!');
+  NN :
+    if OKRightDlg1.ShowModal = mrOK then begin
+      t_name := OKRightDlg1.Edit1.Text;
+
+      if (FILTR(t_name) = '') or (FILTR(t_name) = '*название самолета*') then begin
+        ShowMessagePos('Не данных для поиска', 100, 100);
+        GOTO NN;
+      end;
+
+      Reset(f);
+      Seek(f,0);
+      i:=0;
+      repeat
+        t_name:= (FILTR(t_name));
+        Read(f,z);
+
+        if t_name = z.name then begin
+         inc(i);
+         With Form1.StringGrid4 do begin
+            RowCount := RowCount + 1;
+            Cells[0, i] := z.name;
+            Cells[1, i] := z.prod;
+            Cells[2, i] := IntToStr(z.year_of_comm);
+            Cells[3, i] := IntToStr(z.max_range);
+            Cells[4, i] := IntToStr(z.num_of_pass_seats);
+        end;
+          Form1.Label4.Caption := 'Запись найдена';
+          Writeln(FR, 'Запись ', t_name, ' найдена');
+          Exit;
+        end;
+      until eof(f);
+
+    Form1.Label4.Caption := 'Запись не найдена';
+    end;
+
+end;
+
+procedure TForm1.N9Click(Sender: TObject);
+label NN;
+var t_name: string;
+    i: integer;
+begin
+NN:
+  if OKRightDlg12.ShowModal = mrOK then begin
+      t_name := OKRightDlg12.Edit1.Text;
+
+      if (FILTR(t_name) = '') or (FILTR(t_name) = '*название самолета*') then begin
+        ShowMessagePos('Нет ФИО для поиска', 100, 100);
+        GOTO NN;
+      end;
+  end;
+  delete(t_name);
+  reset(f);
+  i:=0;
+      repeat
+        Read(f,z);
+
+         inc(i);
+         With Form1.StringGrid5 do begin
+            RowCount := RowCount + 1;
+            Cells[0, i] := z.name;
+            Cells[1, i] := z.prod;
+            Cells[2, i] := IntToStr(z.year_of_comm);
+            Cells[3, i] := IntToStr(z.max_range);
+            Cells[4, i] := IntToStr(z.num_of_pass_seats);
+        end;
+      until eof(f);
+    if flag = True then Form1.Label5.Caption := 'Название самолета ошибочно';
+
+    Form1.Label5.Caption := 'Удаление произошло успешно';
+
+end;
+
+end.

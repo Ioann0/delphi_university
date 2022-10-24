@@ -1,0 +1,252 @@
+﻿object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 500
+  ClientWidth = 818
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  Menu = MainMenu1
+  OldCreateOrder = False
+  PopupMenu = PopupMenu1
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object PageControl1: TPageControl
+    Left = 32
+    Top = 24
+    Width = 769
+    Height = 385
+    ActivePage = Корректировка
+    TabOrder = 0
+    object TabSheet1: TTabSheet
+      Caption = #1063#1090#1077#1085#1080#1077
+      object Label1: TLabel
+        Left = 76
+        Top = 32
+        Width = 5
+        Height = 18
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = [fsUnderline]
+        ParentFont = False
+      end
+      object StringGrid1: TStringGrid
+        Left = 16
+        Top = 104
+        Width = 729
+        Height = 177
+        DefaultColWidth = 180
+        RowCount = 1
+        FixedRows = 0
+        TabOrder = 0
+      end
+    end
+    object Корректировка: TTabSheet
+      Caption = #1050#1086#1088#1088#1077#1082#1090#1080#1088#1086#1074#1082#1072
+      ImageIndex = 1
+      object Label2: TLabel
+        Left = 48
+        Top = 32
+        Width = 5
+        Height = 18
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = [fsUnderline]
+        ParentFont = False
+      end
+      object StringGrid2: TStringGrid
+        Left = 13
+        Top = 104
+        Width = 732
+        Height = 177
+        DefaultColWidth = 180
+        RowCount = 1
+        FixedRows = 0
+        TabOrder = 0
+      end
+    end
+    object Дополнение: TTabSheet
+      Caption = #1044#1086#1087#1086#1083#1085#1077#1085#1080#1077
+      ImageIndex = 2
+      object Label3: TLabel
+        Left = 48
+        Top = 40
+        Width = 4
+        Height = 16
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object StringGrid3: TStringGrid
+        Left = 13
+        Top = 105
+        Width = 732
+        Height = 176
+        DefaultColWidth = 180
+        RowCount = 1
+        FixedRows = 0
+        TabOrder = 0
+      end
+    end
+    object TabSheet4: TTabSheet
+      Caption = #1055#1086#1080#1089#1082
+      ImageIndex = 3
+      object Label4: TLabel
+        Left = 48
+        Top = 32
+        Width = 4
+        Height = 16
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object StringGrid4: TStringGrid
+        Left = 10
+        Top = 105
+        Width = 732
+        Height = 176
+        DefaultColWidth = 180
+        RowCount = 1
+        FixedRows = 0
+        TabOrder = 0
+      end
+    end
+    object Удаление: TTabSheet
+      Caption = #1059#1076#1072#1083#1077#1085#1080#1077
+      ImageIndex = 4
+      object Label5: TLabel
+        Left = 40
+        Top = 40
+        Width = 4
+        Height = 16
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object StringGrid5: TStringGrid
+        Left = 11
+        Top = 106
+        Width = 735
+        Height = 175
+        DefaultColWidth = 180
+        RowCount = 1
+        FixedRows = 0
+        TabOrder = 0
+      end
+    end
+    object Протокол: TTabSheet
+      Caption = #1055#1088#1086#1090#1086#1082#1086#1083
+      ImageIndex = 5
+      object ListBox1: TListBox
+        Left = 24
+        Top = 36
+        Width = 721
+        Height = 285
+        ItemHeight = 13
+        TabOrder = 0
+      end
+    end
+  end
+  object MainMenu1: TMainMenu
+    Left = 16
+    Top = 416
+    object N1: TMenuItem
+      Caption = #1057#1086#1079#1076#1072#1090#1100
+      OnClick = N1Click
+    end
+    object N2: TMenuItem
+      Caption = #1042#1099#1087#1086#1083#1085#1080#1090#1100
+      object N5: TMenuItem
+        Caption = #1063#1090#1077#1085#1080#1077
+        OnClick = N5Click
+      end
+      object N6: TMenuItem
+        Caption = #1050#1086#1088#1088#1077#1082#1090#1080#1088#1086#1074#1082#1072
+        OnClick = N6Click
+      end
+      object N7: TMenuItem
+        Caption = #1044#1086#1087#1086#1083#1085#1077#1085#1080#1077
+        OnClick = N7Click
+      end
+      object N8: TMenuItem
+        Caption = #1055#1086#1080#1089#1082
+        OnClick = N8Click
+      end
+      object N9: TMenuItem
+        Caption = #1059#1076#1072#1083#1077#1085#1080#1077
+        OnClick = N9Click
+      end
+    end
+    object N3: TMenuItem
+      Caption = #1057#1092#1086#1088#1084#1080#1088#1086#1074#1072#1090#1100' '#1087#1088#1086#1090#1086#1082#1086#1083
+      OnClick = N3Click
+    end
+    object N4: TMenuItem
+      Caption = '&'#1042#1099#1093#1086#1076
+      OnClick = N4Click
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 56
+    Top = 416
+    object N10: TMenuItem
+      Caption = #1057#1086#1079#1076#1072#1090#1100
+      OnClick = N10Click
+    end
+    object N11: TMenuItem
+      Caption = #1042#1099#1087#1086#1083#1085#1080#1090#1100
+      object N12: TMenuItem
+        Caption = #1063#1090#1077#1085#1080#1077
+        OnClick = N12Click
+      end
+      object N13: TMenuItem
+        Caption = #1050#1086#1088#1088#1077#1082#1090#1080#1088#1086#1074#1082#1072
+        OnClick = N13Click
+      end
+      object N14: TMenuItem
+        Caption = #1044#1086#1087#1086#1083#1085#1077#1085#1080#1077
+        OnClick = N14Click
+      end
+      object N15: TMenuItem
+        Caption = #1055#1086#1080#1089#1082
+        OnClick = N15Click
+      end
+      object N16: TMenuItem
+        Caption = #1059#1076#1072#1083#1077#1085#1080#1077
+        OnClick = N16Click
+      end
+    end
+    object N17: TMenuItem
+      Caption = #1057#1092#1086#1088#1084#1080#1088#1086#1074#1072#1090#1100' '#1087#1088#1086#1090#1086#1082#1086#1083
+      OnClick = N17Click
+    end
+    object N18: TMenuItem
+      Caption = '&'#1042#1099#1093#1086#1076
+      OnClick = N18Click
+    end
+  end
+  object OpenDialog1: TOpenDialog
+    FileName = 'D:\Delphi\lab_4\lab_4.2\Win32\Debug\file_creation.txt'
+    Filter = '|*.txt'
+    Left = 96
+    Top = 416
+  end
+end

@@ -1,0 +1,146 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 469
+  ClientWidth = 721
+  Color = clSkyBlue
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 24
+    Top = 32
+    Width = 217
+    Height = 19
+    Caption = #1044#1083#1103' '#1089#1086#1086#1073#1097#1077#1085#1080#1081' '#1080#1079' '#1086#1082#1085#1072' '#1076#1080#1072#1083#1086#1075#1072
+    Color = clBtnText
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Times New Roman'
+    Font.Style = []
+    ParentColor = False
+    ParentFont = False
+  end
+  object Button1: TButton
+    Left = 24
+    Top = 72
+    Width = 193
+    Height = 25
+    Caption = #1042#1074#1086#1076' '#1080#1089#1093#1086#1076#1085#1099#1093' '#1076#1072#1085#1085#1099#1093
+    TabOrder = 0
+    OnClick = Button1Click
+  end
+  object Button2: TButton
+    Left = 24
+    Top = 105
+    Width = 193
+    Height = 25
+    Caption = #1054#1073#1088#1072#1073#1086#1090#1082#1072' '#1074#1074#1077#1076#1077#1085#1085#1099#1093' '#1076#1072#1085#1085#1099#1093
+    Enabled = False
+    TabOrder = 1
+    OnClick = Button2Click
+  end
+  object Button3: TButton
+    Left = 24
+    Top = 139
+    Width = 193
+    Height = 25
+    Caption = #1042#1099#1074#1086#1076' '#1088#1077#1079#1091#1083#1100#1090#1072#1090#1086#1074' '#1074' '#1092#1072#1081#1083
+    Enabled = False
+    TabOrder = 2
+    OnClick = Button3Click
+  end
+  object Button4: TButton
+    Left = 24
+    Top = 173
+    Width = 193
+    Height = 25
+    Caption = #1055#1086#1082#1072#1079#1072#1090#1100' '#1087#1086#1083#1091#1095#1077#1085#1085#1099#1077' '#1088#1077#1079#1091#1083#1100#1090#1072#1090#1099
+    Enabled = False
+    TabOrder = 3
+  end
+  object Panel1: TPanel
+    Left = 152
+    Top = 233
+    Width = 217
+    Height = 152
+    Color = clSkyBlue
+    ParentBackground = False
+    TabOrder = 4
+    Visible = False
+    object Button5: TButton
+      Left = 32
+      Top = 16
+      Width = 153
+      Height = 25
+      Caption = #1042#1099#1074#1086#1076' '#1074' '#1086#1082#1085#1086' List box'
+      TabOrder = 0
+    end
+    object Button6: TButton
+      Left = 32
+      Top = 47
+      Width = 153
+      Height = 25
+      Caption = #1042#1099#1074#1086#1076' '#1074' '#1086#1082#1085#1086' ComboBox'
+      TabOrder = 1
+    end
+    object Button7: TButton
+      Left = 32
+      Top = 78
+      Width = 153
+      Height = 25
+      Caption = #1042#1099#1074#1086#1076' '#1074' '#1086#1082#1085#1086' Memo'
+      TabOrder = 2
+    end
+    object Button8: TButton
+      Left = 32
+      Top = 109
+      Width = 153
+      Height = 25
+      Caption = #1042#1099#1074#1086#1076' '#1074' '#1090#1072#1073#1083#1080#1094#1091' StringGrid'
+      TabOrder = 3
+    end
+  end
+  object BitBtn1: TBitBtn
+    Left = 352
+    Top = 173
+    Width = 75
+    Height = 25
+    Caption = '&'#1042#1099#1093#1086#1076
+    Kind = bkClose
+    NumGlyphs = 2
+    TabOrder = 5
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 450
+    Width = 721
+    Height = 19
+    Panels = <>
+    ExplicitLeft = 368
+    ExplicitTop = 248
+    ExplicitWidth = 0
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Top = 0
+    Width = 721
+    Height = 1
+    Caption = 'ToolBar1'
+    TabOrder = 7
+  end
+  object OpenDialog1: TOpenDialog
+    FileName = 'D:\Delphi\lab_1_1\Win32\Debug\array.txt'
+    Filter = '|*.txt'
+    InitialDir = 'D:\Delphi\lab_1_1\Win32\Debug\array.txt'
+    Left = 296
+    Top = 80
+  end
+end
